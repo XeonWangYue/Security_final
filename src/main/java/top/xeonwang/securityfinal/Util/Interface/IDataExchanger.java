@@ -1,7 +1,7 @@
-package top.xeonwang.securityfinal.Bean.Interface;
+package top.xeonwang.securityfinal.Util.Interface;
 
 public interface IDataExchanger {
-    boolean start();
+    void start();
     void close();
     boolean hasNext();
 }

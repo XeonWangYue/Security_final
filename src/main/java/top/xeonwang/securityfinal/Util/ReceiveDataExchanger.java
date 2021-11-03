@@ -1,11 +1,9 @@
-package top.xeonwang.securityfinal.Bean;
+package top.xeonwang.securityfinal.Util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pcap4j.core.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import top.xeonwang.securityfinal.Bean.Interface.IDataExchanger;
-import top.xeonwang.securityfinal.Util.DataReceiveSupport;
+import top.xeonwang.securityfinal.Util.Interface.IDataExchanger;
+import top.xeonwang.securityfinal.Component.DataReceiveSupport;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -37,19 +35,19 @@ public class ReceiveDataExchanger implements IDataExchanger {
     }
 
     @Override
-    public boolean start() {
+    public void start() {
         try {
             handle = netCardInf.openLive(SNAPLEN,
                     PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, TIMEOUT);
             if (null == handle) {
-                return false;
+                return;
             }
             handle.loop(-1, (PacketListener) packet ->
                     support.receiveData(packet));
         } catch (PcapNativeException | InterruptedException | NotOpenException e) {
-            return false;
+            log.info("Exception");
         }
-        return true;
+        return;
     }
 
     @Override

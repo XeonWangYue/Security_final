@@ -1,15 +1,16 @@
-package top.xeonwang.securityfinal.Util;
+package top.xeonwang.securityfinal.Component;
 
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import top.xeonwang.securityfinal.Util.DataReceiveEvent;
+import top.xeonwang.securityfinal.Util.Interface.IDataReceiveEventListener;
 
 import java.util.Set;
 
 /**
  * @author Chen Q.
  */
-@Service
+@Component
 public final class DataReceiveSupport {
     private Set<IDataReceiveEventListener> listeners;
 

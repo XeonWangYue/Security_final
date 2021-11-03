@@ -1,4 +1,6 @@
-package top.xeonwang.securityfinal.Util;
+package top.xeonwang.securityfinal.Util.Interface;
+
+import top.xeonwang.securityfinal.Util.DataReceiveEvent;
 
 import java.util.EventListener;
 
