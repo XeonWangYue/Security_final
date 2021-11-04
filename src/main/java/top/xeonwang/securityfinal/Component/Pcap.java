@@ -43,12 +43,9 @@ public class Pcap implements ApplicationRunner {
         }
     }
 
-    public Pcap() {
-        log.info("pacp start");
-    }
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        start();
+        log.info("启动pcap捕获服务");
+//        start();
     }
 }

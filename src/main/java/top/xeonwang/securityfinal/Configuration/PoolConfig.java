@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableAsync
-public class Pool implements AsyncConfigurer {
+public class PoolConfig implements AsyncConfigurer {
 
     @Bean("thread")
     public Executor taskExecutor() {

@@ -1,22 +1,53 @@
 package top.xeonwang.securityfinal.Controller;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import top.xeonwang.securityfinal.Service.RedisTest;
 
 /**
  * @author Chen Q.
  */
+@Slf4j
 @RestController
 public class DataController {
+    @Autowired
+    RedisTest redisTest;
+
     @RequestMapping(method = RequestMethod.GET, path = "/test")
     public String test() {
-        return JSON.toJSONString("yes");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = "yes";
+        String ret = null;
+        try {
+            ret = mapper.writeValueAsString(s);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/test2")
     public String test2() {
-        return JSON.toJSONString("no");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = "hello";
+        String ret = null;
+        try {
+            ret = mapper.writeValueAsString(s);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/test3")
+    public String test3() {
+        String s = redisTest.getValue();
+        log.info(s);
+        return s;
     }
 }
