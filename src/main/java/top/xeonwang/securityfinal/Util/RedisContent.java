@@ -16,4 +16,5 @@ public class RedisContent implements Serializable {
     public String dstAddress;
     public String srcPort;
     public String dstPort;
+    public int length;
 }
