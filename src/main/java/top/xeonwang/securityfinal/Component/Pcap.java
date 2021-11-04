@@ -22,6 +22,9 @@ import java.net.UnknownHostException;
 @Component
 public class Pcap implements ApplicationRunner {
     @Autowired
+    MyEventListener eventListener;
+
+    @Autowired
     DataReceiveSupport support;
 
     @Value(value = "${pcap.ipaddr}")
@@ -34,7 +37,7 @@ public class Pcap implements ApplicationRunner {
             log.info("bind ip: " + addr);
             InetAddress ip = InetAddress.getByName(addr);
             ReceiveDataExchanger exchanger = new ReceiveDataExchanger(ip, support);
-            support.addListener(new MyEventListener());
+            support.addListener(eventListener);
             exchanger.start();
         } catch (PcapNativeException e) {
             log.error("PcapNativeException");
@@ -46,6 +49,6 @@ public class Pcap implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.info("启动pcap捕获服务");
-//        start();
+        start();
     }
 }

@@ -8,7 +8,7 @@ spring:
   redis:
     # Redis数据库索引（默认为0）
     database: 0
-    host: 192.168.17.141
+    host: 127.0.0.1
     port: 6379
     #连接池最大连接数（使用负值表示没有限制）
     jedis:
@@ -23,4 +23,4 @@ spring:
     # 连接超时时间（毫秒）
     timeout: 5000
 pcap:
-  ipaddr: 192.168.17.140
+  ipaddr: 10.30.118.103
