@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.pcap4j.packet.namednumber.EtherType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import top.xeonwang.securityfinal.Service.ScheduledTask;
 import top.xeonwang.securityfinal.Util.Cache_Spring_Redis.RedisUtil;
 import top.xeonwang.securityfinal.Util.Interface.IDataReceiveEventListener;
 
@@ -22,8 +23,7 @@ import java.net.Inet6Address;
 @Slf4j
 @Component
 public class MyEventListener implements IDataReceiveEventListener {
-    @Autowired
-    RedisTemplate<String, Serializable> redisTemplate;
+
     @Override
     public void receive(DataReceiveEvent event) {
         Packet packet = (Packet) event.getSource();
@@ -34,10 +34,11 @@ public class MyEventListener implements IDataReceiveEventListener {
             return;
         } else {
             type = ethernetPacket.getHeader().getType();
-            log.info("报文类型: " + type);
+            //log.info("报文类型: " + type);
         }
-        String key = Long.toString(System.currentTimeMillis());
+
         RedisContent redisContent = new RedisContent();
+        redisContent.setLength(packet.length());
         redisContent.setProtocol(type);
         if (type.equals(EtherType.IPV4)) {
             IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
@@ -53,6 +54,7 @@ public class MyEventListener implements IDataReceiveEventListener {
                 TcpPort dstPort = tcpHeader.getDstPort();
                 redisContent.setSrcPort(srcPort.toString());
                 redisContent.setDstPort(dstPort.toString());
+                ScheduledTask.vector.add(redisContent);
             }
             else if(ipV4Header.getProtocol() == IpNumber.UDP){
                 UdpPacket udpPacket = packet.get(UdpPacket.class);
@@ -61,9 +63,11 @@ public class MyEventListener implements IDataReceiveEventListener {
                 UdpPort dstPort = udpHeader.getDstPort();
                 redisContent.setSrcPort(srcPort.toString());
                 redisContent.setDstPort(dstPort.toString());
+                ScheduledTask.vector.add(redisContent);
             }
+
             int len = ipV4Packet.getHeader().getTotalLengthAsInt();
-            log.info("src: " + srcAddr + " dst: " + dstAddr + " len: " + len);
+            //log.info("src: " + srcAddr + " dst: " + dstAddr + " len: " + len);
         }
         else if(type.equals(EtherType.IPV6)){
             IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
@@ -79,6 +83,7 @@ public class MyEventListener implements IDataReceiveEventListener {
                 TcpPort dstPort = tcpHeader.getDstPort();
                 redisContent.setSrcPort(srcPort.toString());
                 redisContent.setDstPort(dstPort.toString());
+                ScheduledTask.vector.add(redisContent);
             }
             else if(ipV6Header.getProtocol() == IpNumber.UDP){
                 UdpPacket udpPacket = packet.get(UdpPacket.class);
@@ -87,9 +92,10 @@ public class MyEventListener implements IDataReceiveEventListener {
                 UdpPort dstPort = udpHeader.getDstPort();
                 redisContent.setSrcPort(srcPort.toString());
                 redisContent.setDstPort(dstPort.toString());
+                ScheduledTask.vector.add(redisContent);
             }
+
         }
-        log.info(key,redisContent.getProtocol());
-        redisTemplate.opsForValue().set(key,redisContent);
+
     }
 }
