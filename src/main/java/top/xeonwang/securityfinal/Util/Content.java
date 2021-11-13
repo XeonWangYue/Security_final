@@ -10,11 +10,9 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RedisContent implements Serializable {
+public class Content implements Serializable {
     public EtherType protocol;
-    public String srcAddress;
-    public String dstAddress;
-    public String srcPort;
-    public String dstPort;
+    public String srcAddressPort;
+    public String dstAddressPort;
     public int length;
 }
