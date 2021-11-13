@@ -23,6 +23,12 @@ public class MsgServerHandler extends SimpleChannelInboundHandler<MsgProtocol> {
     RedisTemplate redisTemplate;
 
     @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        String ip = ctx.channel().remoteAddress().toString().split(":")[0];
+        redisTemplate.opsForHash().delete("SystemInfo", ip);
+    }
+
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, MsgProtocol msg) throws Exception {
         log.debug("get msg from " + ctx.channel().remoteAddress());
         if (msg.getStep() == 0) {
@@ -43,6 +49,8 @@ public class MsgServerHandler extends SimpleChannelInboundHandler<MsgProtocol> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("异常捕获 ");
+        String ip = ctx.channel().remoteAddress().toString().split(":")[0];
+        redisTemplate.opsForHash().delete("SystemInfo", ip);
         ctx.close();
     }
 }

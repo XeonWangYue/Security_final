@@ -50,7 +50,7 @@ public class Pcap implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 //        Thread.sleep(5000);
-        log.info("启动pcap捕获服务");
-        start();
+//        log.info("启动pcap捕获服务");
+//        start();
     }
 }

@@ -3,6 +3,7 @@ package top.xeonwang.securityfinal.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.xeonwang.securityfinal.Service.SystemManageService;
 
@@ -14,9 +15,14 @@ public class InstController {
     @Autowired
     SystemManageService systemManageService;
 
+    @RequestMapping(method = RequestMethod.POST, path = "/hosts")
+    public String getHosts() {
+        return systemManageService.getHosts();
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/system")
-    public String getSystemInfo() {
-        return systemManageService.getSystemInfo();
+    public String getSystemInfo(@RequestParam String hostname) {
+        return systemManageService.getSystemInfo(hostname);
     }
 
 //    @RequestMapping(method = RequestMethod.POST, path = "/getCpu")

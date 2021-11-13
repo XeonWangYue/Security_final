@@ -37,7 +37,7 @@ public class Redis implements ApplicationRunner {
             SystemInfoVO vo = SystemInfoVO.toSystemInfo();
             ObjectMapper mapper = new ObjectMapper();
             String str = mapper.writeValueAsString(vo);
-            redisTemplate.opsForHash().put("SystemInfo", "localhost", str);
+            redisTemplate.opsForHash().put("SystemInfo", "/localhost", str);
             log.info("redis测试成功！");
         } catch (Exception e) {
             e.printStackTrace();

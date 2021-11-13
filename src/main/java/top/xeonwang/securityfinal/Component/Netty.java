@@ -60,8 +60,8 @@ public class Netty implements ApplicationRunner {
     @Async("thread")
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        log.info("启动netty心跳服务...");
-//        start();
+        log.info("启动netty心跳服务...");
+        start();
     }
 
     @PreDestroy

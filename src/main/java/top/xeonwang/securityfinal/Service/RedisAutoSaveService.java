@@ -25,7 +25,7 @@ public class RedisAutoSaveService {
     RedisTemplate<String, Serializable> redisTemplate;
     public static Vector<RedisContent> vector = new Vector<RedisContent>();
 
-    @Scheduled(cron = "10/1 * * * * ?")
+//    @Scheduled(cron = "10/1 * * * * ?")
     public void execute() {
         String key = Long.toString(System.currentTimeMillis());
         Vector<RedisContent> copy;
