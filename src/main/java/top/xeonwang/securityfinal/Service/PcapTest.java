@@ -17,11 +17,11 @@ import java.util.concurrent.TimeoutException;
  */
 @Slf4j
 //@Service
-public class Pcap {
+public class PcapTest {
     InetAddress addr;
     PcapNetworkInterface nif;
     PcapHandle handle;
-    public Pcap(){
+    public PcapTest(){
         try {
             addr = InetAddress.getByName("192.168.17.140");
             nif = Pcaps.getDevByAddress(addr);
@@ -33,7 +33,7 @@ public class Pcap {
                 Packet packet = handle.getNextPacketEx();
                 IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
                 Inet4Address srcAddr = ipV4Packet.getHeader().getSrcAddr();
-                log.info(srcAddr.toString());
+                log.debug(srcAddr.toString());
             }
         } catch (PcapNativeException e) {
             e.printStackTrace();

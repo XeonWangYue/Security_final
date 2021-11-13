@@ -21,6 +21,8 @@ public class ReceiveDataExchanger implements IDataExchanger {
     public static final int TIMEOUT = 50;
     public static final int SNAPLEN = 65535;
 
+    public static String filter = "not host 192.168.17.140 and not ip6";
+
     public ReceiveDataExchanger(InetAddress addr, DataReceiveSupport support) throws
             PcapNativeException, NullPointerException, UnknownHostException {
         netCardInf = Pcaps.getDevByAddress(addr);
@@ -41,6 +43,9 @@ public class ReceiveDataExchanger implements IDataExchanger {
                     PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, TIMEOUT);
             if (null == handle) {
                 return;
+            }
+            if (filter.length() != 0) {
+                handle.setFilter(filter, BpfProgram.BpfCompileMode.OPTIMIZE);
             }
             handle.loop(-1, (PacketListener) packet ->
                     support.receiveData(packet));

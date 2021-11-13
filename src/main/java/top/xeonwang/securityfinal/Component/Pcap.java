@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import top.xeonwang.securityfinal.Component.DataReceiveSupport;
@@ -31,10 +32,9 @@ public class Pcap implements ApplicationRunner {
     private String addr;
 
 
-    @Async("thread")
     public void start() {
         try {
-            log.info("bind ip: " + addr);
+            log.debug("bind ip: " + addr);
             InetAddress ip = InetAddress.getByName(addr);
             ReceiveDataExchanger exchanger = new ReceiveDataExchanger(ip, support);
             support.addListener(eventListener);
@@ -45,9 +45,11 @@ public class Pcap implements ApplicationRunner {
             log.error("UnknownHostException");
         }
     }
-
+    @Order(2)
+    @Async("thread")
     @Override
     public void run(ApplicationArguments args) throws Exception {
+//        Thread.sleep(5000);
         log.info("启动pcap捕获服务");
         start();
     }

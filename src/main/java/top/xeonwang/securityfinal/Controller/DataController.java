@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import top.xeonwang.securityfinal.Service.RedisTest;
+import top.xeonwang.securityfinal.Component.Redis;
 
 /**
  * @author Chen Q.
@@ -16,7 +16,7 @@ import top.xeonwang.securityfinal.Service.RedisTest;
 @RestController
 public class DataController {
     @Autowired
-    RedisTest redisTest;
+    Redis redisTest;
 
     @RequestMapping(method = RequestMethod.GET, path = "/test")
     public String test() {
@@ -46,8 +46,6 @@ public class DataController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/test3")
     public String test3() {
-        String s = redisTest.getValue();
-        log.info(s);
-        return s;
+        return "";
     }
 }
