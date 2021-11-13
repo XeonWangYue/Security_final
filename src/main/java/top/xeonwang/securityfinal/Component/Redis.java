@@ -40,7 +40,7 @@ public class Redis implements ApplicationRunner {
             redisTemplate.opsForHash().put("SystemInfo", "/localhost", str);
             log.info("redis测试成功！");
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             log.error("redis连接失败...");
         } finally {
             log.info("测试redis连接完毕");

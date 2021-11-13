@@ -31,61 +31,57 @@ public class MyEventListener implements IDataReceiveEventListener {
             //log.info("报文类型: " + type);
         }
 
-        RedisContent redisContent = new RedisContent();
-        redisContent.setLength(packet.length());
-        redisContent.setProtocol(type);
+        Content content = new Content();
+        content.setLength(packet.length());
+        content.setProtocol(type);
         if (type.equals(EtherType.IPV4)) {
             IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
             IpV4Packet.IpV4Header ipV4Header = ipV4Packet.getHeader();
             Inet4Address srcAddr = ipV4Header.getSrcAddr();
             Inet4Address dstAddr = ipV4Header.getDstAddr();
-            redisContent.setSrcAddress(srcAddr.getHostAddress());
-            redisContent.setDstAddress(dstAddr.getHostAddress());
             if(ipV4Header.getProtocol() == IpNumber.TCP){
                 TcpPacket tcpPacket = packet.get(TcpPacket.class);
                 TcpPacket.TcpHeader tcpHeader = tcpPacket.getHeader();
                 TcpPort srcPort = tcpHeader.getSrcPort();
                 TcpPort dstPort = tcpHeader.getDstPort();
-                redisContent.setSrcPort(srcPort.toString());
-                redisContent.setDstPort(dstPort.toString());
-                RedisAutoSaveService.vector.add(redisContent);
+                content.setSrcAddressPort(srcAddr.getHostAddress()+":"+srcPort.toString());
+                content.setDstAddressPort(dstAddr.getHostAddress()+":"+dstPort.toString());
+
             }
             else if(ipV4Header.getProtocol() == IpNumber.UDP){
                 UdpPacket udpPacket = packet.get(UdpPacket.class);
                 UdpPacket.UdpHeader udpHeader = udpPacket.getHeader();
                 UdpPort srcPort = udpHeader.getSrcPort();
                 UdpPort dstPort = udpHeader.getDstPort();
-                redisContent.setSrcPort(srcPort.toString());
-                redisContent.setDstPort(dstPort.toString());
+                content.setSrcAddressPort(srcAddr.getHostAddress()+":"+srcPort.toString());
+                content.setDstAddressPort(dstAddr.getHostAddress()+":"+dstPort.toString());
             }
-
+            RedisAutoSaveService.vector.add(content);
             int len = ipV4Packet.getHeader().getTotalLengthAsInt();
-            log.debug("src: " + srcAddr + " dst: " + dstAddr + " len: " + len);
+            log.debug("src: " + content.srcAddressPort + " dst: " + content.dstAddressPort + " len: " + len);
         }
         else if(type.equals(EtherType.IPV6)){
             IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
             IpV6Packet.IpV6Header ipV6Header = ipV6Packet.getHeader();
             Inet6Address srcAddr = ipV6Header.getSrcAddr();
             Inet6Address dstAddr = ipV6Header.getDstAddr();
-            redisContent.setSrcAddress(srcAddr.getHostAddress());
-            redisContent.setDstAddress(dstAddr.getHostAddress());
             if(ipV6Header.getProtocol() == IpNumber.TCP){
                 TcpPacket tcpPacket = packet.get(TcpPacket.class);
                 TcpPacket.TcpHeader tcpHeader = tcpPacket.getHeader();
                 TcpPort srcPort = tcpHeader.getSrcPort();
                 TcpPort dstPort = tcpHeader.getDstPort();
-                redisContent.setSrcPort(srcPort.toString());
-                redisContent.setDstPort(dstPort.toString());
-                RedisAutoSaveService.vector.add(redisContent);
+                content.setSrcAddressPort(srcAddr.getHostAddress()+":"+srcPort.toString());
+                content.setDstAddressPort(dstAddr.getHostAddress()+":"+dstPort.toString());
+                RedisAutoSaveService.vector.add(content);
             }
             else if(ipV6Header.getProtocol() == IpNumber.UDP){
                 UdpPacket udpPacket = packet.get(UdpPacket.class);
                 UdpPacket.UdpHeader udpHeader = udpPacket.getHeader();
                 UdpPort srcPort = udpHeader.getSrcPort();
                 UdpPort dstPort = udpHeader.getDstPort();
-                redisContent.setSrcPort(srcPort.toString());
-                redisContent.setDstPort(dstPort.toString());
-                RedisAutoSaveService.vector.add(redisContent);
+                content.setSrcAddressPort(srcAddr.getHostAddress()+":"+srcPort.toString());
+                content.setDstAddressPort(dstAddr.getHostAddress()+":"+dstPort.toString());
+                RedisAutoSaveService.vector.add(content);
             }
         }
     }
