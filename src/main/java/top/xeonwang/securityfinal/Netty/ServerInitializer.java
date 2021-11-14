@@ -1,6 +1,5 @@
-package top.xeonwang.securityfinal.netty;
+package top.xeonwang.securityfinal.Netty;
 
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

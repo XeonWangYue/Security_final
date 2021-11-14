@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import top.xeonwang.securityfinal.VO.SystemInfoVO;
@@ -44,8 +45,9 @@ public class SystemManageService {
         return null;
     }
 
+    @Async("thread")
     @Scheduled(cron = "10/1 * * * * ?")
-    private void RecordHost() {
+    public void RecordHost() {
         SystemInfoVO vo = SystemInfoVO.toSystemInfo();
         ObjectMapper mapper = new ObjectMapper();
         String str = null;

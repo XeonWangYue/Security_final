@@ -18,14 +18,21 @@ public class ReceiveDataExchanger implements IDataExchanger {
     private PcapHandle handle;
     private DataReceiveSupport support;
 
-    public static final int TIMEOUT = 50;
-    public static final int SNAPLEN = 65535;
+    private static final int TIMEOUT = 50;
+    private static final int SNAPLEN = 65535;
 
-    public static String filter = "not host 192.168.17.140 and not ip6";
+    private static String nothost = "!host ";
+    private static String and = " and ";
+    private static String ether = "!ether host ";
+    private static String filter = null;
 
     public ReceiveDataExchanger(InetAddress addr, DataReceiveSupport support) throws
             PcapNativeException, NullPointerException, UnknownHostException {
         netCardInf = Pcaps.getDevByAddress(addr);
+        String localv6 = netCardInf.getAddresses().get(0).getAddress().getHostAddress();
+        String localv4 = addr.getHostAddress();
+        filter = nothost + localv6 + and + nothost + localv4;
+        log.info("bpf过滤器 " + filter);
         this.support = support;
         if (netCardInf == null) {
             throw new NullPointerException("网卡实例为空");
@@ -49,15 +56,22 @@ public class ReceiveDataExchanger implements IDataExchanger {
             }
             handle.loop(-1, (PacketListener) packet ->
                     support.receiveData(packet));
-        } catch (PcapNativeException | InterruptedException | NotOpenException e) {
-            log.info("Exception");
+        } catch (PcapNativeException| NotOpenException e) {
+            log.error("Pcap not open exception in start");
+        }
+        catch (InterruptedException e){
+            log.info("Pcap has been interrupted");
         }
         return;
     }
 
     @Override
     public void close() {
-        handle.close();
+        try {
+            handle.breakLoop();
+        } catch (NotOpenException e) {
+            log.error("Pcap not open exception in close");
+        }
     }
 
     @Override
@@ -66,7 +80,7 @@ public class ReceiveDataExchanger implements IDataExchanger {
         try {
             nullFlag = handle.getNextPacket() == null;
         } catch (NotOpenException e) {
-            e.printStackTrace();
+            log.error("handler not open");
         }
         return !nullFlag;
     }

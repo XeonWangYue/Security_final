@@ -3,6 +3,9 @@ package top.xeonwang.securityfinal.VO;
 import lombok.Data;
 import org.pcap4j.packet.namednumber.EtherType;
 
+/**
+ * @author Song Y.
+ */
 @Data
 public class QueryVO {
     private String srcIp;

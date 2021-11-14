@@ -7,6 +7,9 @@ import org.pcap4j.packet.namednumber.EtherType;
 
 import java.io.Serializable;
 
+/**
+ * @author Song Y.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

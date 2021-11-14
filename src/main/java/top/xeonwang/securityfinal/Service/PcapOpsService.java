@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Component
-public class RedisAutoSaveService {
+public class PcapOpsService {
     @Autowired
     RedisTemplate<String, Serializable> redisTemplate;
     public static Vector<Content> vector = new Vector<Content>();

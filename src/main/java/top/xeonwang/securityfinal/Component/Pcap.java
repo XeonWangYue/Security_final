@@ -13,6 +13,7 @@ import top.xeonwang.securityfinal.Component.DataReceiveSupport;
 import top.xeonwang.securityfinal.Util.ReceiveDataExchanger;
 import top.xeonwang.securityfinal.Util.MyEventListener;
 
+import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -31,12 +32,13 @@ public class Pcap implements ApplicationRunner {
     @Value(value = "${pcap.ipaddr}")
     private String addr;
 
+    private ReceiveDataExchanger exchanger;
 
     public void start() {
         try {
             log.debug("bind ip: " + addr);
             InetAddress ip = InetAddress.getByName(addr);
-            ReceiveDataExchanger exchanger = new ReceiveDataExchanger(ip, support);
+            exchanger = new ReceiveDataExchanger(ip, support);
             support.addListener(eventListener);
             exchanger.start();
         } catch (PcapNativeException e) {
@@ -45,12 +47,20 @@ public class Pcap implements ApplicationRunner {
             log.error("UnknownHostException");
         }
     }
+
     @Order(2)
     @Async("thread")
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        Thread.sleep(5000);
-//        log.info("启动pcap捕获服务");
-//        start();
+        log.info("启动pcap捕获服务");
+        start();
+    }
+
+    @PreDestroy
+    public void destory() throws InterruptedException {
+        if(exchanger!=null){
+            exchanger.close();
+        }
+        log.info("关闭pcap");
     }
 }

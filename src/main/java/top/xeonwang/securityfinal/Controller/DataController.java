@@ -3,15 +3,12 @@ package top.xeonwang.securityfinal.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.pcap4j.packet.namednumber.EtherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.xeonwang.securityfinal.Component.Redis;
-import top.xeonwang.securityfinal.Service.RedisAutoSaveService;
-import top.xeonwang.securityfinal.Util.Content;
+import top.xeonwang.securityfinal.Service.H2NetLogService;
+import top.xeonwang.securityfinal.Service.PcapOpsService;
 import top.xeonwang.securityfinal.VO.QueryVO;
-
-import java.util.Vector;
 
 /**
  * @author Chen Q.
@@ -23,7 +20,10 @@ public class DataController {
     Redis redisTest;
 
     @Autowired
-    RedisAutoSaveService service;
+    PcapOpsService service;
+
+    @Autowired
+    H2NetLogService h2NetLogService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -42,15 +42,7 @@ public class DataController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/test2")
     public String test2() {
-        ObjectMapper mapper = new ObjectMapper();
-        String s = "hello";
-        String ret = null;
-        try {
-            ret = mapper.writeValueAsString(s);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
+        return h2NetLogService.getUdp();
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/test3")

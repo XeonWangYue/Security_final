@@ -10,11 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import top.xeonwang.securityfinal.netty.ServerInitializer;
+import top.xeonwang.securityfinal.Netty.ServerInitializer;
 
 import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
@@ -66,8 +65,12 @@ public class Netty implements ApplicationRunner {
 
     @PreDestroy
     public void destory() throws InterruptedException {
-        bossGroup.shutdownGracefully().sync();
-        workGroup.shutdownGracefully().sync();
+        if (bossGroup != null) {
+            bossGroup.shutdownGracefully().sync();
+        }
+        if (workGroup != null) {
+            workGroup.shutdownGracefully().sync();
+        }
         log.info("关闭Netty");
     }
 }
