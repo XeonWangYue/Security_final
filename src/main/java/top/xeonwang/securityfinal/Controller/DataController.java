@@ -42,7 +42,7 @@ public class DataController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/test2")
     public String test2() {
-        return h2NetLogService.getUdp();
+        return "";
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/test3")
@@ -50,48 +50,64 @@ public class DataController {
         return "";
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/packs")
+    public String packscount(@RequestParam String hostname) {
+        return h2NetLogService.getPackCount(hostname);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path ="/speed")
+    public String speedCount(@RequestParam String hostname){
+        return h2NetLogService.packsOneSecond(hostname);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path ="/search")
+    public String searchPack(@RequestParam String bpf){
+        return h2NetLogService.packGetOnce(bpf);
+    }
+
+
     @RequestMapping(method = RequestMethod.POST, path = "/searchBySrcIp")
     public String searchBySrcIp(@RequestBody QueryVO vo) {
         return service.searchBySrcIp(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchBySrcIpPort")
-    public String searchBySrcIpPort(@RequestBody QueryVO vo){
+    public String searchBySrcIpPort(@RequestBody QueryVO vo) {
         return service.searchBySrcIpPort(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchByDstIp")
-    public String searchByDstIp(@RequestBody QueryVO vo){
+    public String searchByDstIp(@RequestBody QueryVO vo) {
         return service.searchByDstIp(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchByDstIpPort")
-    public String searchByDstIpPort(@RequestBody QueryVO vo){
+    public String searchByDstIpPort(@RequestBody QueryVO vo) {
         return service.searchByDstIpPort(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchByProtocol")
-    public String searchByProtocol(@RequestBody QueryVO vo){
+    public String searchByProtocol(@RequestBody QueryVO vo) {
         return service.searchByProtocol(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchBySrcIpProtocol")
-    public String searchBySrcIpProtocol(@RequestBody QueryVO vo){
+    public String searchBySrcIpProtocol(@RequestBody QueryVO vo) {
         return service.searchBySrcIpProtocol(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchByDstIpProtocol")
-    public String searchByDstIpProtocol(@RequestBody QueryVO vo){
+    public String searchByDstIpProtocol(@RequestBody QueryVO vo) {
         return service.searchByDstIpProtocol(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchBySrcIpPortProtocol")
-    public String searchBySrcIpPortProtocol(@RequestBody QueryVO vo){
+    public String searchBySrcIpPortProtocol(@RequestBody QueryVO vo) {
         return service.searchBySrcIpPortProtocol(vo);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/searchByDstIpPortProtocol")
-    public String searchByDstIpPortProtocol(@RequestBody QueryVO vo){
+    public String searchByDstIpPortProtocol(@RequestBody QueryVO vo) {
         return service.searchByDstIpPortProtocol(vo);
     }
 }

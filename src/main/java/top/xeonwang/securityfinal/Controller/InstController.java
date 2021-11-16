@@ -25,6 +25,15 @@ public class InstController {
         return systemManageService.getSystemInfo(hostname);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/warning")
+    public String sendMassage(@RequestParam String hostname) {
+        return systemManageService.sendWaring(hostname);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/disable")
+    public String sendDisable(@RequestParam String hostname) {
+        return systemManageService.sendDisable(hostname);
+    }
 //    @RequestMapping(method = RequestMethod.POST, path = "/getCpu")
 //    public String getCpu() {
 //        String s = systemManageService.getSystemInfo();

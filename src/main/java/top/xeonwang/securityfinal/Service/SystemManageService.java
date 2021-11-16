@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import top.xeonwang.securityfinal.Netty.MsgServerHandler;
 import top.xeonwang.securityfinal.VO.SystemInfoVO;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +25,12 @@ import java.util.Set;
 public class SystemManageService {
     @Autowired
     RedisTemplate redisTemplate;
+
+    @Value(value = "${pcap.ipaddr}")
+    String ip;
+
+    @Autowired
+    MsgServerHandler handler;
 
     public String getSystemInfo(String hostname) {
         Object value = redisTemplate.opsForHash().get("SystemInfo", hostname);
@@ -45,6 +54,14 @@ public class SystemManageService {
         return null;
     }
 
+    public String sendWaring(String hostname) {
+        return handler.sendWarining(hostname);
+    }
+
+    public String sendDisable(String hostname) {
+        return handler.sendDisable(hostname);
+    }
+
     @Async("thread")
     @Scheduled(cron = "10/1 * * * * ?")
     public void RecordHost() {
@@ -53,8 +70,8 @@ public class SystemManageService {
         String str = null;
         try {
             str = mapper.writeValueAsString(vo);
-            log.debug("/localhost: " + vo.toString());
-            redisTemplate.opsForHash().put("SystemInfo", "/localhost", str);
+            log.debug(ip + vo.toString());
+            redisTemplate.opsForHash().put("SystemInfo", ip, str);
         } catch (JsonProcessingException e) {
             log.error("Json");
         } catch (Exception e) {

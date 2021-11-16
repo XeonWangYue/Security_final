@@ -28,16 +28,10 @@ public class Redis implements ApplicationRunner {
     public void getValue() {
         String s = null;
         try {
-            s = (String) redisTemplate.opsForValue().get("mykey");
-            log.info(s);
             if (redisTemplate.hasKey("SystemInfo")) {
                 redisTemplate.delete("SystemInfo");
                 log.info("清空原数据");
             }
-            SystemInfoVO vo = SystemInfoVO.toSystemInfo();
-            ObjectMapper mapper = new ObjectMapper();
-            String str = mapper.writeValueAsString(vo);
-            redisTemplate.opsForHash().put("SystemInfo", "/localhost", str);
             log.info("redis测试成功！");
         } catch (Exception e) {
             log.error("redis连接失败...");

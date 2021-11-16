@@ -3,20 +3,15 @@ package top.xeonwang.securityfinal.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.pcap4j.packet.namednumber.EtherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import top.xeonwang.securityfinal.Util.Interface.PortStatistic;
 import top.xeonwang.securityfinal.Util.Content;
 import top.xeonwang.securityfinal.VO.QueryRetVO;
 import top.xeonwang.securityfinal.VO.QueryVO;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Song Y.

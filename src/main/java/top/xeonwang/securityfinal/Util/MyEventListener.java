@@ -45,8 +45,8 @@ public class MyEventListener implements IDataReceiveEventListener {
 
         IpNumber iptype = null;
 
-        String dstPort = null;
-        String srcPort = null;
+        Integer dstPort = null;
+        Integer srcPort = null;
 
         TransportPacket trans = null;
         IpPacket ipPacket = null;
@@ -64,8 +64,8 @@ public class MyEventListener implements IDataReceiveEventListener {
             }
         }
         if (trans != null && (iptype == IpNumber.TCP || iptype == IpNumber.UDP)) {
-            dstPort = trans.getHeader().getDstPort().toString();
-            srcPort = trans.getHeader().getSrcPort().toString();
+            dstPort = trans.getHeader().getDstPort().valueAsInt();
+            srcPort = trans.getHeader().getSrcPort().valueAsInt();
         }
 
         netLog.setTime(System.currentTimeMillis());
